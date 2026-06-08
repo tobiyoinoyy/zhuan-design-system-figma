@@ -4,6 +4,12 @@ Figma source: [ZHUAN Design](https://www.figma.com/design/2uABdev2ojlhXr9AEDiGcf
 
 This project is the code implementation workspace for the ZHUAN Design component library.
 
+> **For AI agents working in this repository:** before producing any design artifact, load these two files —
+> - [`AGENTS.md`](./AGENTS.md) — `html-design-agent` skill: design methodology, component-reuse priority, anti-AI-slop rules, HTML/React technical conventions.
+> - [`FIGMA_UI_GENERATION_PROMPT.md`](./FIGMA_UI_GENERATION_PROMPT.md) — workflow for turning low-fidelity mockups into high-fidelity UI by mapping every element to real components in this repo and the matching Figma libraries.
+>
+> Reuse existing components in `src/components/` and tokens in `src/tokens/` first; do not invent new styles.
+
 ## Batch 00: Icons
 
 Implemented first as the shared asset layer for all later components:
