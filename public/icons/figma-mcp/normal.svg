@@ -1,0 +1,22 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="&#233;&#128;&#154;&#231;&#148;&#168;&#229;&#156;&#186;&#230;&#153;&#175;/&#230;&#173;&#163;&#229;&#184;&#184;" clip-path="url(#clip0_908_5914)">
+<g id="Clip path group">
+<mask id="mask0_908_5914" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="-1" width="22" height="22">
+<g id="master_svg0_25_4574/25_4573">
+<path id="Vector" d="M20.5 -0.5H-0.5V20.5H20.5V-0.5Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask0_908_5914)">
+<g id="Group">
+<path id="Vector_2" d="M10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5Z" stroke="#111111"/>
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M9.50028 12.9569L14.1036 8.35356L13.3965 7.64645L9.49981 11.5431L7.08041 9.12699L6.37378 9.83457L9.50028 12.9569Z" fill="#111111"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_908_5914">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

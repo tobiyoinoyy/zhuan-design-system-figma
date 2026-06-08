@@ -1,0 +1,392 @@
+.app-shell {
+  margin: 0 auto;
+  max-width: 1240px;
+  padding: 32px 24px 48px;
+}
+
+.app-header {
+  align-items: flex-end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.app-kicker {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 18px;
+  margin: 0 0 6px;
+}
+
+.app-header h1 {
+  font-size: 28px;
+  line-height: 36px;
+  margin: 0;
+}
+
+.app-stats {
+  align-items: center;
+  color: #374151;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.app-stats span {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 7px 12px;
+}
+
+.preview-grid {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.preview-grid > .preview-block:first-child {
+  grid-column: 1 / -1;
+}
+
+.preview-block--wide {
+  grid-column: 1 / -1;
+}
+
+.preview-block {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.preview-block__meta {
+  align-items: center;
+  border-bottom: 1px solid #eef0f4;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.preview-block__meta h2 {
+  font-size: 15px;
+  line-height: 22px;
+  margin: 0;
+}
+
+.preview-block__meta span {
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.preview-block__canvas {
+  background: #1f1f1f;
+  min-height: 220px;
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.phone-strip,
+.button-preview,
+.form-preview,
+.feedback-preview,
+.product-preview,
+.business-preview,
+.navigation-preview,
+.filter-preview,
+.sheet-preview,
+.dialog-preview,
+.order-preview,
+.foundation-preview,
+.foundation-preview__brand,
+.foundation-preview__device {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.icon-preview-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  min-width: 0;
+}
+
+.icon-card {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #edf0f4;
+  border-radius: 6px;
+  color: #111111;
+  display: flex;
+  gap: 10px;
+  min-height: 64px;
+  padding: 10px;
+}
+
+.icon-card--dark {
+  background: #111111;
+  color: #ffffff;
+}
+
+.icon-card__glyph {
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 6px;
+  display: flex;
+  flex: 0 0 36px;
+  height: 36px;
+  justify-content: center;
+}
+
+.icon-card--dark .icon-card__glyph {
+  background: #2a2a2a;
+}
+
+.icon-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.icon-card__text strong,
+.icon-card__text span,
+.icon-card__text small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-card__text strong {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.icon-card__text span {
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.icon-card--dark .icon-card__text span,
+.icon-card--dark .icon-card__text small {
+  color: #d1d5db;
+}
+
+.icon-card__text small {
+  color: #9ca3af;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.button-preview {
+  width: 415px;
+}
+
+.button-preview > .zd-button {
+  margin-left: 12px;
+}
+
+.option-row {
+  background: var(--zd-color-white);
+  display: flex;
+  gap: 30px;
+  padding: 20px;
+  width: 415px;
+}
+
+.form-preview {
+  width: 391px;
+}
+
+.switch-row {
+  align-items: center;
+  background: #1f1f1f;
+  display: flex;
+  gap: 12px;
+}
+
+.feedback-preview {
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 430px;
+}
+
+.product-preview {
+  width: 500px;
+}
+
+.product-preview__assets,
+.product-preview__parts,
+.product-preview__cards {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.product-preview__assets,
+.product-preview__parts {
+  background: var(--zd-color-white);
+  padding: 10px;
+  width: 375px;
+}
+
+.product-preview__parts {
+  align-items: center;
+  min-height: 42px;
+}
+
+.product-preview__cards {
+  gap: 12px;
+  width: 460px;
+}
+
+.business-preview {
+  width: 415px;
+}
+
+.business-preview__row {
+  align-items: center;
+  background: var(--zd-color-white);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  width: 375px;
+}
+
+.navigation-preview,
+.filter-preview {
+  width: 415px;
+}
+
+.sheet-preview {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, 375px);
+  width: 770px;
+}
+
+.dialog-preview {
+  background: #000000;
+  gap: 64px;
+  padding: 20px;
+  width: 335px;
+}
+
+.dialog-preview__actions {
+  background: var(--zd-color-white);
+  border-radius: 8px;
+  padding: 20px 24px 16px;
+  width: 295px;
+}
+
+.spinner-steps {
+  align-items: center;
+  background: #111111;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 32px);
+  padding: 14px;
+}
+
+.order-preview {
+  width: 415px;
+}
+
+.foundation-preview {
+  flex-direction: row;
+  gap: 20px;
+  min-width: 790px;
+}
+
+.foundation-preview__brand {
+  background: var(--zd-color-white);
+  gap: 24px;
+  min-height: 375px;
+  padding: 24px;
+  width: 255px;
+}
+
+.foundation-preview__badge-surface {
+  align-items: center;
+  background: var(--zd-color-text);
+  border-radius: 4px;
+  display: inline-flex;
+  padding: 8px 10px;
+}
+
+.foundation-preview__device {
+  gap: 0;
+  width: 375px;
+}
+
+.template-preview {
+  align-items: flex-start;
+  display: flex;
+  min-width: 0;
+  width: max-content;
+}
+
+@media (max-width: 920px) {
+  .preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-shell {
+    padding: 20px 12px 32px;
+  }
+
+  .preview-block__canvas {
+    padding: 14px;
+  }
+
+  .button-preview,
+  .form-preview,
+    .feedback-preview,
+    .product-preview,
+    .business-preview,
+    .navigation-preview,
+    .filter-preview,
+    .sheet-preview,
+    .dialog-preview,
+    .order-preview,
+    .foundation-preview,
+    .foundation-preview__device,
+    .template-preview,
+    .product-preview__assets,
+    .product-preview__parts,
+    .product-preview__cards,
+    .business-preview__row,
+    .option-row {
+    max-width: 100%;
+  }
+
+  .sheet-preview {
+    grid-template-columns: 375px;
+  }
+
+  .zd-color-gallery,
+  .zd-color-grid {
+    grid-template-columns: 1fr;
+  }
+}

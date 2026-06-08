@@ -1,0 +1,64 @@
+@font-face {
+  font-display: swap;
+  font-family: "Akrobat";
+  font-style: normal;
+  font-weight: 800;
+  src: url("/fonts/Akrobat-ExtraBold.otf") format("opentype");
+}
+
+:root {
+  --zd-color-primary: #ff0f27;
+  --zd-color-primary-soft: #fff2f2;
+  --zd-color-link: #00a3ff;
+  --zd-color-text: #111111;
+  --zd-color-text-secondary: #666666;
+  --zd-color-text-tertiary: #999999;
+  --zd-color-text-muted: #bbbbbb;
+  --zd-color-black: #000000;
+  --zd-color-white: #ffffff;
+  --zd-color-bg: #f8f8f8;
+  --zd-color-dark-panel: #1f1f1f;
+  --zd-color-neutral-darkest: #1f2024;
+  --zd-color-neutral-light-dark: #d4d6dd;
+  --zd-color-neutral-light-darkest: #c5c6cc;
+  --zd-color-highlight-darkest: #006ffd;
+  --zd-color-line: #f0f0f0;
+  --zd-color-border: #d8d8d8;
+  --zd-color-control-border: #d5d5d5;
+  --zd-color-mask: #111111;
+  --zd-color-overlay: rgba(17, 17, 17, 0.7);
+  --zd-color-overlay-light: rgba(255, 255, 255, 0.8);
+  --zd-color-spinner-track: #e8e9f1;
+  --zd-color-condition-appearance: #2e6e89;
+  --zd-color-condition-function: #ee8b57;
+  --zd-color-chip-red-border: #ffccd1;
+  --zd-color-chip-info-border: #bdd8e3;
+  --zd-color-coupon-dash: #ffb8c0;
+  --zd-color-coupon-disabled: #ff8a98;
+  --zd-color-avatar-blue: #34495e;
+  --zd-color-avatar-peach: #f2b7a0;
+  --zd-font-akrobat: "Akrobat", "Arial Narrow", Arial, sans-serif;
+  --zd-font-family: "PingFang SC", "PingFangSC", "Helvetica Neue", Arial, sans-serif;
+  --zd-radius-sm: 6px;
+  --zd-radius-pill: 999px;
+  --zd-shadow-panel: 0 14px 34px rgba(17, 17, 17, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: var(--zd-color-text);
+  font-family: var(--zd-font-family);
+  letter-spacing: 0;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  letter-spacing: 0;
+}

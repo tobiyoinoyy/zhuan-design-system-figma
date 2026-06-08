@@ -1,0 +1,229 @@
+{
+  "source": "Figma REST SVG export via Figma MCP-verified node ids",
+  "fileKey": "2uABdev2ojlhXr9AEDiGcf",
+  "exportedAt": "2026-06-08T03:58:35.012Z",
+  "icons": [
+    {
+      "name": "share",
+      "id": "451:6445",
+      "file": "share.svg"
+    },
+    {
+      "name": "more",
+      "id": "453:6469",
+      "file": "more.svg"
+    },
+    {
+      "name": "search",
+      "id": "441:6394",
+      "file": "search.svg"
+    },
+    {
+      "name": "favorite-folder",
+      "id": "541:4339",
+      "file": "favorite-folder.svg"
+    },
+    {
+      "name": "settings",
+      "id": "541:4345",
+      "file": "settings.svg"
+    },
+    {
+      "name": "customer-service",
+      "id": "454:6566",
+      "file": "customer-service.svg"
+    },
+    {
+      "name": "scan",
+      "id": "541:4355",
+      "file": "scan.svg"
+    },
+    {
+      "name": "rent",
+      "id": "452:6459",
+      "file": "rent.svg"
+    },
+    {
+      "name": "sell",
+      "id": "541:4356",
+      "file": "sell.svg"
+    },
+    {
+      "name": "compare",
+      "id": "541:4357",
+      "file": "compare.svg"
+    },
+    {
+      "name": "close",
+      "id": "471:6238",
+      "file": "close.svg"
+    },
+    {
+      "name": "dialog-back",
+      "id": "542:4398",
+      "file": "dialog-back.svg"
+    },
+    {
+      "name": "footprint",
+      "id": "543:4413",
+      "file": "footprint.svg"
+    },
+    {
+      "name": "message",
+      "id": "541:4390",
+      "file": "message.svg"
+    },
+    {
+      "name": "back",
+      "id": "438:5525",
+      "file": "back.svg"
+    },
+    {
+      "name": "back-white",
+      "id": "541:4294",
+      "file": "back-white.svg"
+    },
+    {
+      "name": "favorite",
+      "id": "458:4125",
+      "file": "favorite.svg"
+    },
+    {
+      "name": "favorite-active",
+      "id": "458:4124",
+      "file": "favorite-active.svg"
+    },
+    {
+      "name": "jump",
+      "id": "542:4409",
+      "file": "jump.svg"
+    },
+    {
+      "name": "cart",
+      "id": "458:4108",
+      "file": "cart.svg"
+    },
+    {
+      "name": "filter-expand-done",
+      "id": "434:5384",
+      "file": "filter-expand-done.svg"
+    },
+    {
+      "name": "filter-expand",
+      "id": "434:5380",
+      "file": "filter-expand.svg"
+    },
+    {
+      "name": "jump-shape",
+      "id": "664:20594",
+      "file": "jump-shape.svg"
+    },
+    {
+      "name": "filter-collapse-done",
+      "id": "434:5385",
+      "file": "filter-collapse-done.svg"
+    },
+    {
+      "name": "filter-collapse",
+      "id": "434:5381",
+      "file": "filter-collapse.svg"
+    },
+    {
+      "name": "sort",
+      "id": "434:5382",
+      "file": "sort.svg"
+    },
+    {
+      "name": "sort-asc",
+      "id": "434:5386",
+      "file": "sort-asc.svg"
+    },
+    {
+      "name": "sort-desc",
+      "id": "434:5387",
+      "file": "sort-desc.svg"
+    },
+    {
+      "name": "category-brand-model",
+      "id": "434:5388",
+      "file": "category-brand-model.svg"
+    },
+    {
+      "name": "filter",
+      "id": "434:5383",
+      "file": "filter.svg"
+    },
+    {
+      "name": "filter-region",
+      "id": "542:4412",
+      "file": "filter-region.svg"
+    },
+    {
+      "name": "collapse",
+      "id": "543:4426",
+      "file": "collapse.svg"
+    },
+    {
+      "name": "expand",
+      "id": "543:4423",
+      "file": "expand.svg"
+    },
+    {
+      "name": "order",
+      "id": "543:4443",
+      "file": "order.svg"
+    },
+    {
+      "name": "abnormal",
+      "id": "908:5912",
+      "file": "abnormal.svg"
+    },
+    {
+      "name": "info",
+      "id": "908:5913",
+      "file": "info.svg"
+    },
+    {
+      "name": "normal",
+      "id": "908:5914",
+      "file": "normal.svg"
+    },
+    {
+      "name": "red-dot-number",
+      "id": "951:2191",
+      "file": "red-dot-number.svg"
+    },
+    {
+      "name": "red-dot",
+      "id": "951:2199",
+      "file": "red-dot.svg"
+    },
+    {
+      "name": "location",
+      "id": "956:3716",
+      "file": "location.svg"
+    },
+    {
+      "name": "refresh",
+      "id": "956:3726",
+      "file": "refresh.svg"
+    }
+  ],
+  "toast": [
+    {
+      "name": "toast-success",
+      "id": "761:20695",
+      "file": "toast-success.svg"
+    },
+    {
+      "name": "toast-fail",
+      "id": "761:20700",
+      "file": "toast-fail.svg"
+    },
+    {
+      "name": "toast-loading",
+      "id": "761:20705",
+      "file": "toast-loading.svg"
+    }
+  ]
+}
