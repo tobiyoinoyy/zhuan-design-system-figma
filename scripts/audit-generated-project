@@ -1,0 +1,391 @@
+#!/usr/bin/env bash
+# ZHUAN Design · generated UI audit
+# Usage:
+#   bash scripts/audit-generated-project [target-dir]
+#
+# This script is adapted from the 2026-06-09 colleague harness package.
+# It keeps the original rule intent, but maps the old repository shape to
+# this Vite + React + TypeScript package:
+#   packages/design-system/* -> src/components, src/tokens, src/styles/tokens.css
+#   --zz-*                   -> --zd-*
+#   <Icon>                   -> <ZhuanIcon>
+#
+# Exit codes:
+#   0 = hard checks passed
+#   1 = hard failures found
+#   2 = usage error
+
+set -uo pipefail
+
+TARGET="${1:-.}"
+
+if [ ! -d "$TARGET" ]; then
+  echo "Usage: bash scripts/audit-generated-project [target-dir]"
+  echo "Directory does not exist: $TARGET"
+  exit 2
+fi
+
+ROOT="$(cd "$TARGET" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+PASS="✓"
+FAIL="✗"
+WARN="!"
+problems=0
+warnings=0
+
+EVIDENCE_DIR="$ROOT/.harness-evidence"
+if [ -d "$EVIDENCE_DIR" ]; then
+  AUDIT_LOG="$EVIDENCE_DIR/audit-result.txt"
+  {
+    echo "# zhuan-design audit"
+    echo "# target: $ROOT"
+    echo "# date: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo
+  } > "$AUDIT_LOG"
+  exec > >(tee -a "$AUDIT_LOG") 2>&1
+fi
+
+if command -v rg >/dev/null 2>&1; then
+  SEARCH() {
+    rg -l "$1" "$ROOT" \
+      --glob '!node_modules/**' \
+      --glob '!dist/**' \
+      --glob '!build/**' \
+      --glob '!.git/**' \
+      --glob '!coverage/**' \
+      --glob '!*.bak' \
+      --glob '!*.bak-*' \
+      --glob '!*.backup' \
+      --glob '!*.old' \
+      --glob '!*.tmp' \
+      2>/dev/null
+  }
+  SEARCH_N() {
+    rg -n "$1" "$ROOT" \
+      --glob '!node_modules/**' \
+      --glob '!dist/**' \
+      --glob '!build/**' \
+      --glob '!.git/**' \
+      --glob '!coverage/**' \
+      --glob '!*.bak' \
+      --glob '!*.bak-*' \
+      --glob '!*.backup' \
+      --glob '!*.old' \
+      --glob '!*.tmp' \
+      2>/dev/null
+  }
+else
+  SEARCH() {
+    grep -rlE --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=build --exclude-dir=.git --exclude-dir=coverage "$1" "$ROOT" 2>/dev/null
+  }
+  SEARCH_N() {
+    grep -rnE --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=build --exclude-dir=.git --exclude-dir=coverage "$1" "$ROOT" 2>/dev/null
+  }
+fi
+
+target_files() {
+  find "$ROOT" \
+    \( -path "$ROOT/node_modules" -o -path "$ROOT/dist" -o -path "$ROOT/build" -o -path "$ROOT/.git" -o -path "$ROOT/coverage" -o -path "$ROOT/docs" -o -path "$ROOT/scripts" \) -prune -o \
+    -type f \( -name '*.tsx' -o -name '*.ts' -o -name '*.jsx' -o -name '*.js' -o -name '*.css' -o -name '*.html' \) \
+    ! -name '*.bak' ! -name '*.bak-*' ! -name '*.backup' ! -name '*.old' ! -name '*.tmp' \
+    -print
+}
+
+is_design_system_file() {
+  case "$1" in
+    "$REPO_ROOT/src/components/"*|"$REPO_ROOT/src/tokens/"*|"$REPO_ROOT/src/styles/tokens.css"|"$REPO_ROOT/src/styles/components.css"|"$REPO_ROOT/src/styles/app.css")
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+print_hits() {
+  if [ -n "$1" ]; then
+    printf "%s\n" "$1" | sed 's/^/      /'
+  fi
+}
+
+CODE_SEARCH_N() {
+  local pattern="$1"
+  local results=""
+  while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    if is_design_system_file "$f"; then
+      continue
+    fi
+    hit="$(grep -nE "$pattern" "$f" 2>/dev/null || true)"
+    if [ -n "$hit" ]; then
+      results="${results}${f}"$'\n'"${hit}"$'\n'
+    fi
+  done < <(target_files)
+  printf "%s" "$results"
+}
+
+echo "=================================================="
+echo "ZHUAN Design · generated UI audit"
+echo "Target: $ROOT"
+echo "=================================================="
+echo
+
+echo "[1] Real component imports / calls"
+component_pattern="(<(TopNav|SearchHeader|Tabs|SortTabs|FilterChip|ChipRail|FilterOptionGrid|QuickFilterDropdown|ProductCardH|ProductCardFeeds|Price|BottomSheet|DefaultSheet|SheetFrame|Dialog|SystemDialog|CustomDialog|Button|ButtonBar|OptionButton|Toast|LoadingSpinner|OrderCard|IOSStatusBar|IOSHomeBar|IOSKeyboard|ZhuanIcon)[[:space:]/>]|from ['\"][^'\"]*components['\"])"
+component_hits=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  hit="$(grep -nE "$component_pattern" "$f" 2>/dev/null || true)"
+  if [ -n "$hit" ]; then
+    component_hits="${component_hits}${f}"$'\n'
+  fi
+done < <(target_files)
+if [ -n "$component_hits" ]; then
+  echo "  $PASS Found real component usage"
+  echo "      files: $(printf "%s\n" "$component_hits" | wc -l | tr -d ' ')"
+else
+  echo "  $FAIL No real ZHUAN component usage found"
+  echo "      Use exports from src/components/index.ts instead of hand-written UI."
+  problems=$((problems+1))
+fi
+echo
+
+echo "[2] Hand-written replacement components"
+redef_pattern="(function|const)[[:space:]]+(ProductCard|Chip|Icon|ZhuanIcon|TopNav|SearchBar|SearchHeader|Sheet|Dialog|Button|Tabs|Toast|OrderCard)[[:space:]]*(=|\\()"
+redef_hits="$(CODE_SEARCH_N "$redef_pattern" || true)"
+if [ -n "$redef_hits" ]; then
+  echo "  $WARN Found possible replacements for existing components"
+  print_hits "$redef_hits"
+  warnings=$((warnings+1))
+else
+  echo "  $PASS No obvious same-name replacement components"
+fi
+echo
+
+echo "[3] CSS class names that often indicate hand-written component copies"
+class_pattern="(topnav|top-nav|search-bar|product-card|filter-chip|bottom-sheet|dialog-card|toast|status-bar|home-indicator)"
+class_hits=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  if is_design_system_file "$f"; then
+    continue
+  fi
+  hit="$(grep -nE "$class_pattern" "$f" 2>/dev/null || true)"
+  if [ -n "$hit" ]; then
+    class_hits="${class_hits}${f}"$'\n'"${hit}"$'\n'
+  fi
+done < <(target_files)
+if [ -n "$class_hits" ]; then
+  echo "  $WARN Found class names commonly used to imitate components"
+  print_hits "$class_hits"
+  warnings=$((warnings+1))
+else
+  echo "  $PASS No suspicious component-copy class names outside DS files"
+fi
+echo
+
+echo "[4] Icon usage"
+raw_icon_hits=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  case "$f" in
+    "$REPO_ROOT/src/components/Feedback.tsx"|"$REPO_ROOT/src/components/Sheet.tsx"|"$REPO_ROOT/src/components/icons.tsx")
+      continue
+      ;;
+  esac
+  hit="$(grep -nE "<img[^>]*(figma-mcp|/icons/|public/icons/)|src=[\"'][^\"']*(figma-mcp|/icons/)" "$f" 2>/dev/null || true)"
+  if [ -n "$hit" ]; then
+    raw_icon_hits="${raw_icon_hits}${f}"$'\n'"${hit}"$'\n'
+  fi
+done < <(target_files)
+if [ -n "$raw_icon_hits" ]; then
+  echo "  $FAIL Found direct icon img usage outside allowed component internals"
+  print_hits "$raw_icon_hits"
+  echo "      Use <ZhuanIcon name=\"...\" /> for business icon usage."
+  problems=$((problems+1))
+else
+  echo "  $PASS Icon usage does not bypass ZhuanIcon"
+fi
+echo
+
+echo "[5] Product price field semantics"
+bad_price_hits="$(CODE_SEARCH_N "ProductCardH[^\\n>]*price=[\"'][^\"']*[^0-9\"'][^\"']*[\"']|<Price[^\\n>]*value=[\"'][^\"']*[^0-9\"'][^\"']*[\"']" || true)"
+if [ -n "$bad_price_hits" ]; then
+  echo "  $FAIL ProductCardH.price / Price.value must be plain digits"
+  print_hits "$bad_price_hits"
+  problems=$((problems+1))
+else
+  echo "  $PASS Price values look numeric in static string calls"
+fi
+echo
+
+echo "[6] Promo text length"
+promo_hits="$(CODE_SEARCH_N "promo=[\"'][^\"']{9,}[\"']" || true)"
+if [ -n "$promo_hits" ]; then
+  echo "  $WARN Found long promo strings; Price.promo should be short"
+  print_hits "$promo_hits"
+  warnings=$((warnings+1))
+else
+  echo "  $PASS Promo strings look short in static calls"
+fi
+echo
+
+echo "[7] Font usage"
+font_hits="$(CODE_SEARCH_N "font-family[^;]*(Inter|Roboto|Fraunces|system-ui)|@import[^;]*(fonts\\.googleapis|Inter|Roboto)" || true)"
+if [ -n "$font_hits" ]; then
+  echo "  $FAIL Found external or non-DS font usage"
+  print_hits "$font_hits"
+  echo "      Use var(--zd-font-family) and var(--zd-font-akrobat)."
+  problems=$((problems+1))
+else
+  echo "  $PASS No external font usage found"
+fi
+echo
+
+echo "[8] AI-slop visual effects"
+effect_hits="$(CODE_SEARCH_N "linear-gradient\\(|radial-gradient\\(|backdrop-filter[[:space:]]*:" || true)"
+if [ -n "$effect_hits" ]; then
+  echo "  $WARN Found gradients or backdrop-filter"
+  print_hits "$effect_hits"
+  echo "      Tool pages should avoid these unless DESIGN.md §8 marketing exception applies."
+  warnings=$((warnings+1))
+else
+  echo "  $PASS No gradient / backdrop-filter patterns found"
+fi
+echo
+
+echo "[9] Color token semantics and hard-coded colors"
+color_violations=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  # Token source files and DS preview/component CSS are allowed to define raw colors.
+  if is_design_system_file "$f"; then
+    continue
+  fi
+  hits="$(grep -nE "(color|background|background-color|border-color|border-top-color|border-right-color|border-bottom-color|border-left-color|outline-color|fill|stroke|iconColor|bgColor|textColor|themeColor)[[:space:]]*[:=][^;\"]*(#[0-9a-fA-F]{3,8}|rgba?\\(|hsla?\\(|var\\(--[^)]+\\))" "$f" 2>/dev/null | grep -v "var(--zd-" || true)"
+  if [ -n "$hits" ]; then
+    color_violations="${color_violations}${f}"$'\n'"${hits}"$'\n'
+  fi
+done < <(target_files)
+if [ -n "$color_violations" ]; then
+  echo "  $FAIL Found hard-coded colors or non-DS color variables outside DS files"
+  print_hits "$color_violations"
+  echo "      Use var(--zd-color-*) or zhuanColors.*. If this is user-specified, add HARNESS-COLOR-INTENT evidence."
+  problems=$((problems+1))
+else
+  echo "  $PASS No hard-coded color fields outside DS files"
+fi
+
+link_misuse=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  hit="$(grep -nE "(row-value|tag-num|tag-mark|item-value|category|decor|icon).*var\\(--zd-color-link\\)|var\\(--zd-color-link\\).*(row-value|tag-num|tag-mark|item-value|category|decor|icon)" "$f" 2>/dev/null || true)"
+  if [ -n "$hit" ]; then
+    link_misuse="${link_misuse}${f}"$'\n'"${hit}"$'\n'
+  fi
+done < <(target_files)
+if [ -n "$link_misuse" ]; then
+  echo "  $FAIL Found --zd-color-link used in likely decorative/business fields"
+  print_hits "$link_misuse"
+  problems=$((problems+1))
+else
+  echo "  $PASS No obvious --zd-color-link semantic misuse"
+fi
+echo
+
+echo "[10] HARNESS-COLOR-INTENT evidence"
+intent=""
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  found="$(head -5 "$f" 2>/dev/null | grep -E "HARNESS-COLOR-INTENT:[[:space:]]*(default|user-spec|hifi-license)" | head -1 | sed -E 's/.*HARNESS-COLOR-INTENT:[[:space:]]*(default|user-spec|hifi-license).*/\1/' || true)"
+  if [ -n "$found" ]; then
+    intent="$found"
+    break
+  fi
+done < <(target_files)
+intent="${intent:-default}"
+if [ "$intent" = "user-spec" ]; then
+  spec="$EVIDENCE_DIR/USER-COLOR-SPEC.md"
+  if [ ! -f "$spec" ]; then
+    echo "  $FAIL user-spec requires .harness-evidence/USER-COLOR-SPEC.md"
+    problems=$((problems+1))
+  elif ! grep -Eq "(user-quote:|^>)" "$spec"; then
+    echo "  $FAIL USER-COLOR-SPEC.md must include user-quote: or a markdown quote"
+    problems=$((problems+1))
+  elif ! grep -Eiq "(红|蓝|绿|黄|紫|橙|黑|白|灰|青|粉|棕|褐|金|银|red|blue|green|yellow|purple|orange|black|white|gray|grey|cyan|pink|brown|gold|silver|#[0-9a-fA-F]{3,8}|rgba?\\(|hsla?\\()" "$spec"; then
+    echo "  $FAIL user-spec evidence does not contain a real color word from the user's quote"
+    problems=$((problems+1))
+  else
+    echo "  $PASS user-spec evidence exists and contains color language"
+  fi
+elif [ "$intent" = "hifi-license" ]; then
+  license="$EVIDENCE_DIR/PROJECT-COLOR-LICENSE.md"
+  if [ ! -f "$license" ]; then
+    echo "  $FAIL hifi-license requires .harness-evidence/PROJECT-COLOR-LICENSE.md"
+    problems=$((problems+1))
+  elif ! grep -Eq "^hifi-source:" "$license" || ! grep -Eq "^approved-tokens:" "$license" || ! grep -Eq "^reason:" "$license"; then
+    echo "  $FAIL PROJECT-COLOR-LICENSE.md must include hifi-source, approved-tokens, and reason"
+    problems=$((problems+1))
+  else
+    hifi_source="$(grep -E "^hifi-source:" "$license" | head -1 | sed 's/^hifi-source:[[:space:]]*//')"
+    if [ -n "$hifi_source" ] && [ ! -e "$ROOT/$hifi_source" ]; then
+      echo "  $FAIL hifi-source path does not exist: $hifi_source"
+      problems=$((problems+1))
+    else
+      echo "  $PASS hifi-license evidence exists"
+    fi
+  fi
+else
+  echo "  $PASS default color intent"
+fi
+echo
+
+echo "[11] Cross-product source trace"
+based_on="$EVIDENCE_DIR/BASED-ON.md"
+if [ -f "$based_on" ]; then
+  if ! grep -Eq "^source-project:" "$based_on" || ! grep -Eq "^source-commit:" "$based_on" || ! grep -Eq "^source-audit-status:[[:space:]]*pass[[:space:]]*$" "$based_on"; then
+    echo "  $FAIL BASED-ON.md must include source-project, source-commit, and source-audit-status: pass"
+    problems=$((problems+1))
+  else
+    echo "  $PASS BASED-ON.md source trace is complete"
+  fi
+else
+  pollution_hits="$(CODE_SEARCH_N "(tag-mark|tag-num|row-value|item-value)" || true)"
+  if [ -n "$pollution_hits" ]; then
+    echo "  $WARN Found class names often seen in copied polluted outputs; add BASED-ON.md if this derives from another output"
+    print_hits "$pollution_hits"
+    warnings=$((warnings+1))
+  else
+    echo "  $PASS No BASED-ON evidence needed"
+  fi
+fi
+echo
+
+echo "[12] Build artifact / dependency folders"
+if [ -d "$ROOT/node_modules" ]; then
+  echo "  $WARN node_modules exists in target. Do not include it in GitHub/package delivery."
+  warnings=$((warnings+1))
+else
+  echo "  $PASS node_modules not present in target"
+fi
+if [ -d "$ROOT/dist" ]; then
+  echo "  $WARN dist exists in target. Keep it out of source commits unless delivering a static build intentionally."
+  warnings=$((warnings+1))
+else
+  echo "  $PASS dist not present in target"
+fi
+echo
+
+echo "=================================================="
+if [ "$problems" -gt 0 ]; then
+  echo "$FAIL Audit failed: $problems hard issue(s), $warnings warning(s)."
+  exit 1
+fi
+
+if [ "$warnings" -gt 0 ]; then
+  echo "$PASS Hard checks passed with $warnings warning(s). Review warnings before handoff."
+else
+  echo "$PASS All checks passed."
+fi

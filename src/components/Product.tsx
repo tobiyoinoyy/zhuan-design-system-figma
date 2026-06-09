@@ -196,13 +196,12 @@ export function ProductCardH({
   promo = '满1299减100',
   condition,
   imageKind = 'electronics',
-  imageSize = 88,
+  imageSize = 90,
   layout = 'two-line',
   className = '',
   sellChips = [
     { label: '在仓直发' },
-    { label: '快速充电', tone: 'black' },
-    { label: '充电0次', tone: 'black' }
+    { label: '卖点标签', tone: 'black' }
   ]
 }: ProductCardHProps) {
   return (

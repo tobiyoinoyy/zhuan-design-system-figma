@@ -406,7 +406,7 @@ function DetailCard({ children }: { children: ReactNode }) {
 
 export function OrderDetailDialogTemplate() {
   return (
-    <article className="zd-ui-template-phone zd-ui-template-phone--gray" data-node-id="950:467">
+    <article className="zd-ui-template-phone zd-ui-template-phone--gray zd-ui-template-phone--mask-top" data-node-id="950:467">
       <IOSStatusBar />
       <div className="zd-ui-template__top-nav">
         <TopNav title="Title Label" variant="plain" />

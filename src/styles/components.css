@@ -841,10 +841,10 @@
   background: var(--zd-color-white);
   color: var(--zd-color-text);
   display: flex;
-  gap: 16px;
+  gap: 14px;
   height: 120px;
   overflow: hidden;
-  padding: 10px 0 10px 16px;
+  padding: 0 16px;
   width: 375px;
 }
 
@@ -2090,8 +2090,7 @@
 }
 
 .zd-dialog--system {
-  min-height: 230px;
-  padding: 20px 24px 16px;
+  padding: 20px 24px;
 }
 
 .zd-dialog--custom {

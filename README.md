@@ -4,11 +4,34 @@ Figma source: [ZHUAN Design](https://www.figma.com/design/2uABdev2ojlhXr9AEDiGcf
 
 This project is the code implementation workspace for the ZHUAN Design component library.
 
-> **For AI agents working in this repository:** before producing any design artifact, load these two files —
-> - [`AGENTS.md`](./AGENTS.md) — `html-design-agent` skill: design methodology, component-reuse priority, anti-AI-slop rules, HTML/React technical conventions.
+> **For AI agents working in this repository:** before producing any design artifact, load these files —
+> - [`AGENTS.md`](./AGENTS.md) — design methodology, component-reuse priority, anti-AI-slop rules, technical conventions, agent self-check list.
+> - [`docs/DESIGN.md`](./docs/DESIGN.md) — token system, component selection map, hard constraints, §8 marketing exception.
+> - [`docs/COMPONENT_USAGE.md`](./docs/COMPONENT_USAGE.md) — component picking decision tree, field semantics, icon style rules.
+> - [`docs/INPUT_SOURCE_RULES.md`](./docs/INPUT_SOURCE_RULES.md) — six input-source archetypes (text / lo-fi / hi-fi / PRD / marketing / mixed), §0.1 image attachment rules, §0.2 complex input pacing, §2.1/§2.2/§2.4 token-semantic boundaries.
+> - [`docs/AI_UI_WORKFLOW.md`](./docs/AI_UI_WORKFLOW.md) — GitHub repo → agent browser preview → approval → Figma MCP editable handoff workflow.
 > - [`FIGMA_UI_GENERATION_PROMPT.md`](./FIGMA_UI_GENERATION_PROMPT.md) — workflow for turning low-fidelity mockups into high-fidelity UI by mapping every element to real components in this repo and the matching Figma libraries.
 >
 > Reuse existing components in `src/components/` and tokens in `src/tokens/` first; do not invent new styles.
+
+## 📚 设计规则文档
+
+所有规则、约定、踩坑账本都在 `docs/` 下:
+
+| 文档 | 用途 |
+|---|---|
+| [`docs/DESIGN.md`](./docs/DESIGN.md) | 设计系统硬约束:token 系统 / 颜色语义 / §8 营销例外 |
+| [`docs/COMPONENT_USAGE.md`](./docs/COMPONENT_USAGE.md) | 组件选型决策树 / 字段语义边界 / 生成自查清单 |
+| [`docs/FIGMA_COMPONENT_MAPPING.md`](./docs/FIGMA_COMPONENT_MAPPING.md) | Figma 节点 / 组件 / 模版到工程包组件的映射清单 |
+| [`docs/AI_UI_WORKFLOW.md`](./docs/AI_UI_WORKFLOW.md) | GitHub 工程包 → agent 生成预览 → 浏览器审批 → Figma MCP 可编辑交付工作流 |
+| [`docs/HARNESS_SUPPLEMENT_2026_06_09.md`](./docs/HARNESS_SUPPLEMENT_2026_06_09.md) | 2026-06-09 同事训练补充包解析 + 当前工程转译说明 |
+| [`docs/INPUT_SOURCE_RULES.md`](./docs/INPUT_SOURCE_RULES.md) | 6 类输入源处理规则 + token 语义边界 + 颜色三声明 |
+| [`docs/HARNESS_FEEDBACK.md`](./docs/HARNESS_FEEDBACK.md) | 反馈回流通道 + GitHub Issue 模板 |
+| [`docs/HARNESS_ISSUES.md`](./docs/HARNESS_ISSUES.md) | 案件汇总表 + 评级体系 + 状态流转 |
+| [`docs/HARNESS_ISSUES/_template.md`](./docs/HARNESS_ISSUES/_template.md) | 单条案件 14 字段模板 |
+| [`docs/CHANGELOG-RULES.md`](./docs/CHANGELOG-RULES.md) | 规则演进账本(每条规则的事故源头) |
+| [`docs/MIGRATION_PLAN.md`](./docs/MIGRATION_PLAN.md) | 从旧仓库迁移规则的对照清单 + 改写约定 |
+| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 多人协作、分支、PR 和维护边界 |
 
 ## Batch 00: Icons
 
@@ -16,7 +39,7 @@ Implemented first as the shared asset layer for all later components:
 
 - `ZhuanIcon`
 - `iconRegistry`
-- 41 icon variants from the Figma `图标` page
+- 45 icon variants from the Figma `图标` page
 - Figma-exported SVG assets in `public/icons/figma-mcp`
 - Figma node mapping through `data-figma-node-id`
 
@@ -274,7 +297,19 @@ Representative Figma nodes:
 
 ## Audit
 
-The final Figma-to-code coverage checklist is in `COMPONENT_AUDIT.md`.
+The final Figma-to-code coverage checklist is in `COMPONENT_AUDIT.md`. The detailed Figma node to package component mapping is in [`docs/FIGMA_COMPONENT_MAPPING.md`](./docs/FIGMA_COMPONENT_MAPPING.md).
+
+For generated UI projects or preview pages, run the adapted Harness audit:
+
+```bash
+npm run audit:generated -- .
+```
+
+For a generated project in another folder:
+
+```bash
+bash scripts/audit-generated-project /path/to/generated-ui
+```
 
 ## Scripts
 
@@ -282,13 +317,16 @@ The final Figma-to-code coverage checklist is in `COMPONENT_AUDIT.md`.
 npm install
 npm run dev
 npm run build
+npm run audit:generated -- .
 ```
 
 Local preview:
 
 ```text
-http://localhost:5174/
+http://localhost:5173/
 ```
+
+If that port is occupied, start Vite with another port, for example `npm run dev -- --port 5176 --strictPort`.
 
 ## Structure
 
